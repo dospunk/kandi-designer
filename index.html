@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Kandi Designer</title>
+	<link rel="stylesheet" href="css/index.css">
+	<script type="module" src="js/index.js"></script>
+</head>
+<body>
+	<div id="toolbar">
+		<div>
+			Size:
+			<button id="xDecrease"> - </button>
+			<input type="number" id="xInput">
+			<button id="xIncrease">+</button>
+			&times;
+			<button id="yDecrease">-</button>
+			<input type="number" id="yInput">
+			<button id="yIncrease">+</button>
+		</div>
+		<div id="color-palette">
+
+		</div>
+		<div id="edit-color-palette">
+			<div id="edit-current-colors"></div>
+			<button id="add-to-palette">+</button>
+		</div>
+	</div>
+	<div id="canvas-container">
+		<canvas id="kandi-canvas"></canvas>
+	</div>
+</body>
+</html>
