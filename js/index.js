@@ -7,6 +7,7 @@ if (!ctx)
 const kandi = new Kandi(ctx, DOM.canvas.width, DOM.canvas.height);
 DOM.initListeners(kandi);
 DOM.populatePalette(kandi);
+DOM.initDimensionInputs(kandi);
 const anim = () => {
     kandi.draw();
     window.requestAnimationFrame(anim);

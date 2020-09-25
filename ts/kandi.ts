@@ -1,7 +1,7 @@
 const leftOffset = 20;
 const topOffset = 20;
-const beadW = 14;
-const beadH = 20;
+const beadW = 21;
+const beadH = 30;
 const outlineWidth = 1;
 
 const beadYOffsetAt = (x:number) => (beadH/2)*(x%2)
@@ -24,16 +24,16 @@ export default class Kandi {
 	){
 		this.startPoint = {x: leftOffset, y: topOffset};
 		this.endPoint = {
-			x: leftOffset+(this.design[0].length*beadW),
-			y: topOffset+(this.design.length*beadH)
+			x: leftOffset+(this.getWidth()*beadW),
+			y: topOffset+(this.getHeight()*beadH)
 		};
 	}
 
 	draw = () => {
 		this.ctx.clearRect(0,0,this.canvWidth, this.canvHeight);
 		//draw beads
-		for (let i = 0; i < this.design.length; i++) {
-			for (let j = 0; j < this.design[0].length; j++) {
+		for (let i = 0; i < this.getHeight(); i++) {
+			for (let j = 0; j < this.getWidth(); j++) {
 				const x = leftOffset+(beadW*j);
 				const y = topOffset+(beadH*i)+beadYOffsetAt(j);
 				const color = this.design[i][j];
@@ -54,9 +54,44 @@ export default class Kandi {
 		x = Math.floor(x / beadW);
 		y = Math.floor((y - beadYOffsetAt(x)) / beadH);
 		//if click is within the bounds of the design, set the color of the bead clicked
-		if(x < this.design[0].length && x >= 0 && y < this.design.length && y >= 0) {
+		if(x < this.getWidth() && x >= 0 && y < this.getHeight() && y >= 0) {
 			console.log(`clicked on bead at ${x}, ${y}`);
 			this.design[y][x] = this.currColor;
+		}
+	}
+
+	getHeight = () => this.design.length;
+	getWidth = () => this.design[0].length;
+
+	setHeight = (newH: number) => {
+		if(newH < 1) return;
+		if(newH > this.getHeight()) {
+			while(this.getHeight() !== newH){
+				this.design.push(new Array<number>(this.getWidth()).fill(0));
+			}
+		} else if(newH < this.getHeight()){
+			while(this.getHeight() !== newH){
+				this.design.pop();
+			}
+		}
+	}
+
+	setWidth = (newW: number) => {
+		if(newW < 1) return;
+		if(newW > this.getWidth()) {
+			while(this.getWidth() !== newW){
+				for (let i = 0; i < this.design.length; i++) {
+					const row = this.design[i];
+					row.push(0);
+				}
+			}
+		} else if(newW < this.getWidth()){
+			while(this.getWidth() !== newW){
+				for (let i = 0; i < this.design.length; i++) {
+					const row = this.design[i];
+					row.pop();
+				}
+			}
 		}
 	}
 }
