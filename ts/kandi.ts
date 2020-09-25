@@ -18,7 +18,14 @@ export default class Kandi {
 											   [0,0,0,0,0],
 											   [0,0,0,0,0],
 											   [0,0,0,0,0]],
-		public palette: Array<string> = ["#ffffff", "#ff0000", "#00ff00", "#0000ff"],
+		public palette: Array<string> = ["#ffffff",
+		                                 "#000000",
+										 "#A800FF",
+										 "#0079FF",
+										 "#00F11D",
+										 "#FFEF00",
+										 "#FF7F00",
+										 "#FF0900"],
 		public currColor: number = 1,
 		public outlineColor: string = "#000000"
 	){

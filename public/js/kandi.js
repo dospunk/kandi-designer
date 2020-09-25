@@ -8,7 +8,14 @@ export default class Kandi {
     constructor(ctx, canvWidth, canvHeight, design = [[0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]], palette = ["#ffffff", "#ff0000", "#00ff00", "#0000ff"], currColor = 1, outlineColor = "#000000") {
+        [0, 0, 0, 0, 0]], palette = ["#ffffff",
+        "#000000",
+        "#A800FF",
+        "#0079FF",
+        "#00F11D",
+        "#FFEF00",
+        "#FF7F00",
+        "#FF0900"], currColor = 1, outlineColor = "#000000") {
         this.ctx = ctx;
         this.canvWidth = canvWidth;
         this.canvHeight = canvHeight;
