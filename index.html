@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Kandi Designer</title>
+	<link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+	<div id="toolbar">
+		<div>
+			Size:
+			<button id="xDecrease"> - </button>
+			<input type="number" id="xInput">
+			<button id="xIncrease">+</button>
+			&times;
+			<button id="yDecrease">-</button>
+			<input type="number" id="yInput">
+			<button id="yIncrease">+</button>
+			<button id="shiftLeft">Shift Left</button>
+			<button id="shiftRight">Shift Right</button>
+		</div>
+		<div>
+			<div id="color-palette-container">
+				<div id="color-palette">
+				</div>
+				<button id="edit-palette">Edit</button>
+			</div>
+			<div id="edit-color-palette-container">
+				<div id="edit-color-palette"></div>
+				<button id="add-to-palette">+</button>
+				<button id="done-editing">Done</button>
+			</div>
+		</div>
+	</div>
+	<div id="canvas-container">
+		<canvas id="kandi-canvas" width="900" height="400"></canvas>
+	</div>
+	<div>
+		<button id="exportDesign">Export Design</button>
+		<br />
+		<label for="loadDesign">Load Design: </label><input id="importDesign" type="file"/>
+	</div>
+	<script type="module" src="js/index.js"></script>
+</body>
+</html>

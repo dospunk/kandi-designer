@@ -1,0 +1,21 @@
+html, body {
+	height: 90%;
+}
+
+#kandi-canvas {
+	border: 1px solid black;
+	/*display: block;
+	margin: auto;*/
+}
+
+#canvas-container {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#edit-color-palette-container {
+	display: none;
+}
+
