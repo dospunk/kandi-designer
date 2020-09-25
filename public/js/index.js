@@ -4,8 +4,8 @@ import Kandi from './kandi.js';
 const ctx = DOM.canvas.getContext('2d');
 if (!ctx)
     throw Error("Could not get canvas rendering context");
-const kandi = new Kandi(ctx, DOM.canvas.width, DOM.canvas.height);
-DOM.initListeners(kandi);
+let kandi = new Kandi(ctx, DOM.canvas.width, DOM.canvas.height);
+DOM.initListeners(kandi, k => kandi = k);
 DOM.populatePalette(kandi);
 DOM.initDimensionInputs(kandi);
 const anim = () => {

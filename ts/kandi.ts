@@ -101,4 +101,8 @@ export default class Kandi {
 			}
 		}
 	}
+
+	isEmpty = () => {
+		return this.design.every(row => row.every(bead => bead === 0));
+	}
 }

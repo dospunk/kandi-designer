@@ -88,6 +88,9 @@ export default class Kandi {
                 }
             }
         };
+        this.isEmpty = () => {
+            return this.design.every(row => row.every(bead => bead === 0));
+        };
         this.startPoint = { x: leftOffset, y: topOffset };
         this.endPoint = {
             x: leftOffset + (this.getWidth() * beadW),

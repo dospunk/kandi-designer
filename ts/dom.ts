@@ -1,4 +1,4 @@
-import type Kandi from './kandi';
+import Kandi from './kandi.js';
 
 const getButtonById = (id: string) => document.getElementById(id) as HTMLButtonElement;
 const getDivById = (id: string) => document.getElementById(id) as HTMLDivElement;
@@ -6,6 +6,7 @@ const getDivById = (id: string) => document.getElementById(id) as HTMLDivElement
 export const canvas = document.getElementById("kandi-canvas") as HTMLCanvasElement;
 const xInput = document.getElementById("xInput") as HTMLInputElement;
 const yInput = document.getElementById("yInput") as HTMLInputElement;
+const loadDesignInput = document.getElementById("importDesign") as HTMLInputElement;
 
 const palette = getDivById("color-palette");
 const editPalette = getDivById("edit-color-palette");
@@ -21,19 +22,32 @@ const doneEditingBtn = getButtonById("done-editing");
 const addColorBtn = getButtonById("add-to-palette");
 const shiftLeftBtn = getButtonById("shiftLeft");
 const shiftRightBtn = getButtonById("shiftRight");
+const exportBtn = getButtonById("exportDesign");
 
 
-export function initListeners(kandi: Kandi){
+export function initListeners(kandi: Kandi, setKandi: (newKandi: Kandi) => void){
 	//TODO: set up event listeners
 	//inputs: onfocusout
 	canvas.addEventListener('click', (evt)=>{
 		const rect = canvas.getBoundingClientRect();
 		kandi.onClick({x: evt.clientX-rect.left, y: evt.clientY-rect.top});
 	});
-	xDecrease.onclick = () => kandi.setWidth(kandi.getWidth()-1);
-	xIncrease.onclick = () => kandi.setWidth(kandi.getWidth()+1);
-	yDecrease.onclick = () => kandi.setHeight(kandi.getHeight()-1);
-	yIncrease.onclick = () => kandi.setHeight(kandi.getHeight()+1);
+	xDecrease.onclick = () => {
+		kandi.setWidth(kandi.getWidth()-1);
+		xInput.value = kandi.getWidth().toString();
+	};
+	xIncrease.onclick = () => {
+		kandi.setWidth(kandi.getWidth()+1);
+		xInput.value = kandi.getWidth().toString();
+	};
+	yDecrease.onclick = () => {
+		kandi.setHeight(kandi.getHeight()-1);
+		yInput.value = kandi.getHeight().toString();
+	};
+	yIncrease.onclick = () => {
+		kandi.setHeight(kandi.getHeight()+1);
+		yInput.value = kandi.getHeight().toString();
+	};
 	editPaletteBtn.onclick = () => {
 		//console.log("edit pressed");//DEV
 		paletteContainer.style.display = "none";
@@ -57,6 +71,8 @@ export function initListeners(kandi: Kandi){
 			kandi
 		));
 	}
+
+	//todo: move this logic inside kandi class
 	shiftLeftBtn.onclick = () => {
 		const firstColumn = kandi.design.map(row => row[0]);
 		for (let i = 0; i < kandi.getHeight(); i++) {
@@ -69,6 +85,7 @@ export function initListeners(kandi: Kandi){
 			kandi.design[i][kandi.getWidth()-1] = firstColumn[i];
 		}
 	}
+	//todo: move this logic inside kandi class
 	shiftRightBtn.onclick = () => {
 		const lastColumn = kandi.design.map(row => row[kandi.getWidth()-1]);
 		for (let i = 0; i < kandi.getHeight(); i++) {
@@ -81,6 +98,38 @@ export function initListeners(kandi: Kandi){
 			kandi.design[i][0] = lastColumn[i];
 		}
 	}
+	exportBtn.onclick = () => {
+		const dlElem = document.createElement("a");
+		const paletteStr = kandi.palette.join(",") + "\n";
+		const designStr = kandi.design.map((row) => row.join(",")).join("\n");
+		dlElem.setAttribute("href", `data:text/csv;charset=utf-8,${encodeURIComponent(paletteStr+designStr)}`);
+		dlElem.setAttribute("download", "kandi_design.csv");
+		dlElem.style.width = "0";
+		dlElem.style.height = "0";
+		document.body.appendChild(dlElem);
+		dlElem.click();
+		document.body.removeChild(dlElem);
+	}
+	loadDesignInput.onchange = async () => {
+		const fileList = loadDesignInput.files;
+		const firstFile = fileList?.item(0);
+		if(firstFile && (kandi.isEmpty() || confirm("Any unsaved progress will be lost. Continue?"))){
+			const unparsedCSV = await firstFile.text();
+			//console.log(unparsedCSV);//DEV
+			const arrayOfAll = unparsedCSV.split("\n").map(rowAsStr => rowAsStr.split(","));
+			console.log(arrayOfAll);//DEV
+			const newPalette = arrayOfAll.shift();
+			const newDesign = arrayOfAll.map(row => row.map(bead => parseInt(bead)));
+			//find a way to pass this to index
+			kandi.palette = newPalette!;
+			kandi.design = newDesign!;
+			clearPalette();
+			populatePalette(kandi);
+			initDimensionInputs(kandi);
+		}
+	}
+	xInput.onchange = () => kandi.setWidth(parseInt(xInput.value))
+	yInput.onchange = () => kandi.setHeight(parseInt(yInput.value))
 }
 
 function createPaletteButton(color: string, idx: number, kandi: Kandi): HTMLButtonElement {
@@ -103,6 +152,11 @@ function createEditPaletteButton(color: string, idx: number, kandi: Kandi): HTML
 		kandi.palette[idx] = input.value;
 	};
 	return input;
+}
+
+function clearPalette(){
+	while(palette.lastChild) palette.removeChild(palette.lastChild);
+	while(editPalette.lastChild) editPalette.removeChild(editPalette.lastChild);
 }
 
 export function populatePalette(kandi: Kandi){
