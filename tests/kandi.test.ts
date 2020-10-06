@@ -3,7 +3,7 @@ import Kandi from '../ts/kandi'
 const canv = document.createElement('canvas');
 canv.width = 900;
 canv.height = 400;
-const ctx = canv.getContext('2d');
+const ctx = canv.getContext('2d') as CanvasRenderingContext2D;
 
 test('create a Kandi object', ()=>{
 	expect(() => new Kandi(ctx, canv.width, canv.height)).not.toThrowError();
