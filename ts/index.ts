@@ -10,7 +10,8 @@ DOM.populatePalette(kandi);
 DOM.initDimensionInputs(kandi);
 
 const anim = () => {
-	kandi.draw()
+	kandi.paint();
+	kandi.draw();
 	window.requestAnimationFrame(anim);
 };
 window.requestAnimationFrame(anim);

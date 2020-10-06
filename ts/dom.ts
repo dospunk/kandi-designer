@@ -26,12 +26,18 @@ const exportBtn = getButtonById("exportDesign");
 
 
 export function initListeners(kandi: Kandi, setKandi: (newKandi: Kandi) => void){
-	//TODO: set up event listeners
-	//inputs: onfocusout
-	canvas.addEventListener('click', (evt)=>{
+	//canvas
+	/*canvas.addEventListener('click', evt =>{
 		const rect = canvas.getBoundingClientRect();
 		kandi.onClick({x: evt.clientX-rect.left, y: evt.clientY-rect.top});
+	});*/
+	canvas.addEventListener('mousemove', evt =>{
+		const rect = canvas.getBoundingClientRect();
+		kandi.curs.updatePosition({x: evt.clientX-rect.left, y: evt.clientY-rect.top});
 	});
+	canvas.addEventListener('mousedown', () => kandi.curs.onDown());
+	document.addEventListener('mouseup', () => kandi.curs.onUp());
+	//increase/decrease size buttons
 	xDecrease.onclick = () => {
 		kandi.setWidth(kandi.getWidth()-1);
 		xInput.value = kandi.getWidth().toString();
@@ -48,6 +54,7 @@ export function initListeners(kandi: Kandi, setKandi: (newKandi: Kandi) => void)
 		kandi.setHeight(kandi.getHeight()+1);
 		yInput.value = kandi.getHeight().toString();
 	};
+	//palette buttons
 	editPaletteBtn.onclick = () => {
 		//console.log("edit pressed");//DEV
 		paletteContainer.style.display = "none";
@@ -72,32 +79,11 @@ export function initListeners(kandi: Kandi, setKandi: (newKandi: Kandi) => void)
 		));
 	}
 
-	//todo: move this logic inside kandi class
-	shiftLeftBtn.onclick = () => {
-		const firstColumn = kandi.design.map(row => row[0]);
-		for (let i = 0; i < kandi.getHeight(); i++) {
-			for (let j = 1; j < kandi.getWidth(); j++) {
-				const bead = kandi.design[i][j];
-				kandi.design[i][j-1] = kandi.design[i][j];
-			}
-		}
-		for (let i = 0; i < kandi.getHeight(); i++) {
-			kandi.design[i][kandi.getWidth()-1] = firstColumn[i];
-		}
-	}
-	//todo: move this logic inside kandi class
-	shiftRightBtn.onclick = () => {
-		const lastColumn = kandi.design.map(row => row[kandi.getWidth()-1]);
-		for (let i = 0; i < kandi.getHeight(); i++) {
-			const row = kandi.design[i];
-			for (let j = kandi.getWidth()-2; j >= 0; j--) {
-				kandi.design[i][j+1] = kandi.design[i][j];
-			}
-		}
-		for (let i = 0; i < kandi.getHeight(); i++) {
-			kandi.design[i][0] = lastColumn[i];
-		}
-	}
+	//shift left/right buttons
+	shiftLeftBtn.onclick = () => kandi.shiftLeft();
+	shiftRightBtn.onclick = () => kandi.shiftRight();
+
+	//export/import
 	exportBtn.onclick = () => {
 		const dlElem = document.createElement("a");
 		const paletteStr = kandi.palette.join(",") + "\n";
@@ -117,7 +103,7 @@ export function initListeners(kandi: Kandi, setKandi: (newKandi: Kandi) => void)
 			const unparsedCSV = await firstFile.text();
 			//console.log(unparsedCSV);//DEV
 			const arrayOfAll = unparsedCSV.split("\n").map(rowAsStr => rowAsStr.split(","));
-			console.log(arrayOfAll);//DEV
+			//console.log(arrayOfAll);//DEV
 			const newPalette = arrayOfAll.shift();
 			const newDesign = arrayOfAll.map(row => row.map(bead => parseInt(bead)));
 			//find a way to pass this to index
@@ -128,6 +114,8 @@ export function initListeners(kandi: Kandi, setKandi: (newKandi: Kandi) => void)
 			initDimensionInputs(kandi);
 		}
 	}
+
+	//change size inputs
 	xInput.onchange = () => kandi.setWidth(parseInt(xInput.value))
 	yInput.onchange = () => kandi.setHeight(parseInt(yInput.value))
 }

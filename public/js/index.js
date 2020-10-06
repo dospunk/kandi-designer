@@ -9,6 +9,7 @@ DOM.initListeners(kandi, k => kandi = k);
 DOM.populatePalette(kandi);
 DOM.initDimensionInputs(kandi);
 const anim = () => {
+    kandi.paint();
     kandi.draw();
     window.requestAnimationFrame(anim);
 };

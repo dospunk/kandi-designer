@@ -1,3 +1,5 @@
+import Cursor from "./cursor.js";
+
 const leftOffset = 20;
 const topOffset = 20;
 const beadW = 21;
@@ -27,7 +29,8 @@ export default class Kandi {
 										 "#FF7F00",
 										 "#FF0900"],
 		public currColor: number = 1,
-		public outlineColor: string = "#000000"
+		public outlineColor: string = "#000000",
+		public curs: Cursor = new Cursor()
 	){
 		this.startPoint = {x: leftOffset, y: topOffset};
 		this.endPoint = {
@@ -53,17 +56,23 @@ export default class Kandi {
 		}
 	}
 
-	onClick = (clickedAt: point) => {
-		//convert click coord to array coord
-		console.log(`clicked at ${clickedAt.x}, ${clickedAt.y}`);//DEV
-		let x = clickedAt.x-leftOffset;
-		let y = clickedAt.y-topOffset;
-		x = Math.floor(x / beadW);
-		y = Math.floor((y - beadYOffsetAt(x)) / beadH);
-		//if click is within the bounds of the design, set the color of the bead clicked
-		if(x < this.getWidth() && x >= 0 && y < this.getHeight() && y >= 0) {
-			console.log(`clicked on bead at ${x}, ${y}`);
-			this.design[y][x] = this.currColor;
+	/**
+	 * colors the bead underneath the cursor if the left mouse button is pressed
+	 */
+	paint = () => {
+		if(this.curs.down){
+			//convert click coord to array coord
+			let x = this.curs.pos.x-leftOffset;
+			let y = this.curs.pos.y-topOffset;
+			x = Math.floor(x / beadW);
+			y = Math.floor((y - beadYOffsetAt(x)) / beadH);
+			//if click is within the bounds of the design & the beads color !== the current selected color,
+			//set the color of the bead clicked
+			const inBounds = x < this.getWidth() && x >= 0 && y < this.getHeight() && y >= 0;
+			if(inBounds && this.design[y][x] !== this.currColor) {
+				console.log(`changing color of bead at ${x}, ${y}`);//DEV
+				this.design[y][x] = this.currColor;
+			}
 		}
 	}
 
@@ -104,5 +113,30 @@ export default class Kandi {
 
 	isEmpty = () => {
 		return this.design.every(row => row.every(bead => bead === 0));
+	}
+
+	shiftLeft = () => {
+		const firstColumn = this.design.map(row => row[0]);
+		for (let i = 0; i < this.getHeight(); i++) {
+			for (let j = 1; j < this.getWidth(); j++) {
+				this.design[i][j-1] = this.design[i][j];
+			}
+		}
+		for (let i = 0; i < this.getHeight(); i++) {
+			this.design[i][this.getWidth()-1] = firstColumn[i];
+		}
+	}
+
+	shiftRight = () => {
+		const lastColumn = this.design.map(row => row[this.getWidth()-1]);
+		for (let i = 0; i < this.getHeight(); i++) {
+			const row = this.design[i];
+			for (let j = this.getWidth()-2; j >= 0; j--) {
+				row[j+1] = row[j];
+			}
+		}
+		for (let i = 0; i < this.getHeight(); i++) {
+			this.design[i][0] = lastColumn[i];
+		}
 	}
 }
