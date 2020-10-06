@@ -15,11 +15,23 @@ jobs:
   publish:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+
+      - name: install node v14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: npm install
+        run: npm install
+      
+      #todo: run tests
+      
+      - name: compile TypeScript
+        uses: icrawl/action-tsc@v1
 
       # Runs a single command using the runners shell
       - name: publish to Pages
