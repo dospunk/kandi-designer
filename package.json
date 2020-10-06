@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A page for making Kandi patterns",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -16,6 +16,9 @@
   },
   "homepage": "https://github.com/dospunk/kandi-designer#readme",
   "devDependencies": {
+    "@types/jest": "^26.0.14",
+    "jest": "^26.5.2",
+    "ts-jest": "^26.4.1",
     "typescript": "^4.0.3"
   }
 }

@@ -30,10 +30,11 @@ jobs:
       - name: npm install
         run: npm install
       
-      #todo: run tests
-      
       - name: compile TypeScript
         uses: icrawl/action-tsc@v1
+
+      - name: run tests
+        run: npm run test
 
       # Runs a single command using the runners shell
       - name: publish to Pages
