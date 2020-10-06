@@ -8,6 +8,7 @@ let kandi = new Kandi(ctx, DOM.canvas.width, DOM.canvas.height);
 DOM.initListeners(kandi, k=>kandi=k);
 DOM.populatePalette(kandi);
 DOM.initDimensionInputs(kandi);
+DOM.updateBeadCounts(kandi);
 
 const anim = () => {
 	kandi.paint();

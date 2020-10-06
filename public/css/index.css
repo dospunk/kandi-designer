@@ -19,3 +19,26 @@ html, body {
 	display: none;
 }
 
+#bead-counts {
+	padding-left: 0;
+	display: inline-block;
+}
+
+#bead-counts > li{
+	list-style-type: none;
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.bead-count-color-label {
+	display: inline-block;
+	border: 1px solid black;
+	width: 1rem;
+	height: 1rem;
+	margin-right: 5px;
+}
+
+#color-palette > button {
+	width: 2rem;
+	height: 2rem;
+}

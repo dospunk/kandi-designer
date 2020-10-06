@@ -7,6 +7,7 @@ export const canvas = document.getElementById("kandi-canvas") as HTMLCanvasEleme
 const xInput = document.getElementById("xInput") as HTMLInputElement;
 const yInput = document.getElementById("yInput") as HTMLInputElement;
 const loadDesignInput = document.getElementById("importDesign") as HTMLInputElement;
+const beadCountsList = document.getElementById("bead-counts") as HTMLUListElement;
 
 const palette = getDivById("color-palette");
 const editPalette = getDivById("edit-color-palette");
@@ -27,16 +28,15 @@ const exportBtn = getButtonById("exportDesign");
 
 export function initListeners(kandi: Kandi, setKandi: (newKandi: Kandi) => void){
 	//canvas
-	/*canvas.addEventListener('click', evt =>{
-		const rect = canvas.getBoundingClientRect();
-		kandi.onClick({x: evt.clientX-rect.left, y: evt.clientY-rect.top});
-	});*/
 	canvas.addEventListener('mousemove', evt =>{
 		const rect = canvas.getBoundingClientRect();
 		kandi.curs.updatePosition({x: evt.clientX-rect.left, y: evt.clientY-rect.top});
 	});
 	canvas.addEventListener('mousedown', () => kandi.curs.onDown());
-	document.addEventListener('mouseup', () => kandi.curs.onUp());
+	document.addEventListener('mouseup', () => {
+		kandi.curs.onUp();
+		updateBeadCounts(kandi);
+	});
 	//increase/decrease size buttons
 	xDecrease.onclick = () => {
 		kandi.setWidth(kandi.getWidth()-1);
@@ -123,10 +123,7 @@ export function initListeners(kandi: Kandi, setKandi: (newKandi: Kandi) => void)
 function createPaletteButton(color: string, idx: number, kandi: Kandi): HTMLButtonElement {
 	const btn = document.createElement("button");
 	btn.style.backgroundColor = color;
-	//btn.style.color = color;
-	//btn.innerText = color;
-	btn.style.width = "2rem";
-	btn.style.height = "2rem"
+	//btn.className = "palette-btn";
 	btn.onclick = () => kandi.currColor = idx;
 	return btn;
 }
@@ -142,9 +139,13 @@ function createEditPaletteButton(color: string, idx: number, kandi: Kandi): HTML
 	return input;
 }
 
+function clearChildren(elem: HTMLElement){
+	while(elem.lastChild) elem.removeChild(elem.lastChild);
+}
+
 function clearPalette(){
-	while(palette.lastChild) palette.removeChild(palette.lastChild);
-	while(editPalette.lastChild) editPalette.removeChild(editPalette.lastChild);
+	clearChildren(palette);
+	clearChildren(editPalette);
 }
 
 export function populatePalette(kandi: Kandi){
@@ -158,4 +159,30 @@ export function populatePalette(kandi: Kandi){
 export function initDimensionInputs(kandi: Kandi){
 	xInput.value = kandi.getWidth().toString();
 	yInput.value = kandi.getHeight().toString();
+}
+
+export function updateBeadCounts(kandi: Kandi){
+	clearChildren(beadCountsList);
+	const amounts: {[color: number]: number} = {};
+	for (let i = 0; i < kandi.design.length; i++) {
+		const row = kandi.design[i];
+		for (let j = 0; j < row.length; j++) {
+			const bead = row[j];
+			if(!amounts[bead]) amounts[bead] = 1;
+			else amounts[bead]++;
+		}
+	}
+	for (const paletteColor in amounts) {
+		if (Object.prototype.hasOwnProperty.call(amounts, paletteColor)) {
+			const amnt = amounts[paletteColor];
+			const colorLabel = document.createElement('span');
+			colorLabel.className = "bead-count-color-label";
+			colorLabel.style.backgroundColor = kandi.palette[paletteColor];
+			const amntLabel = document.createTextNode(amnt.toString());
+			const listItem = document.createElement("li");
+			listItem.appendChild(colorLabel);
+			listItem.appendChild(amntLabel);
+			beadCountsList.appendChild(listItem);
+		}
+	}
 }
