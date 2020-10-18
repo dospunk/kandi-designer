@@ -17,6 +17,7 @@
   "homepage": "https://github.com/dospunk/kandi-designer#readme",
   "devDependencies": {
     "@types/jest": "^26.0.14",
+    "canvas": "^2.6.1",
     "jest": "^26.5.2",
     "ts-jest": "^26.4.1",
     "typescript": "^4.0.3"
