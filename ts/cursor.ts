@@ -8,6 +8,6 @@ export default class Cursor{
 		this.pos = pos;
 	}
 
-	onDown = () => this.down = true;
-	onUp   = () => this.down = false;
+	onDown = () => {this.down = true};
+	onUp   = () => {this.down = false};
 }
