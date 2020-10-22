@@ -1,4 +1,3 @@
-import Cursor from "./cursor.js";
 const leftOffset = 20;
 const topOffset = 20;
 const beadW = 21;
@@ -16,7 +15,7 @@ export default class Kandi {
         "#00F11D",
         "#FFEF00",
         "#FF7F00",
-        "#FF0900"], currColor = 1, outlineColor = "#000000", curs = new Cursor()) {
+        "#FF0900"], currColor = 1, outlineColor = "#000000") {
         this.ctx = ctx;
         this.canvWidth = canvWidth;
         this.canvHeight = canvHeight;
@@ -24,7 +23,6 @@ export default class Kandi {
         this.palette = palette;
         this.currColor = currColor;
         this.outlineColor = outlineColor;
-        this.curs = curs;
         this.draw = () => {
             this.ctx.clearRect(0, 0, this.canvWidth, this.canvHeight);
             //draw beads
@@ -44,20 +42,18 @@ export default class Kandi {
         /**
          * colors the bead underneath the cursor if the left mouse button is pressed
          */
-        this.paint = () => {
-            if (this.curs.down) {
-                //convert click coord to array coord
-                let x = this.curs.pos.x - leftOffset;
-                let y = this.curs.pos.y - topOffset;
-                x = Math.floor(x / beadW);
-                y = Math.floor((y - beadYOffsetAt(x)) / beadH);
-                //if click is within the bounds of the design & the beads color !== the current selected color,
-                //set the color of the bead clicked
-                const inBounds = x < this.getWidth() && x >= 0 && y < this.getHeight() && y >= 0;
-                if (inBounds && this.design[y][x] !== this.currColor) {
-                    console.log(`changing color of bead at ${x}, ${y}`); //DEV
-                    this.design[y][x] = this.currColor;
-                }
+        this.paint = (pos, tool) => {
+            //convert click coord to array coord
+            let x = pos.x - leftOffset;
+            let y = pos.y - topOffset;
+            x = Math.floor(x / beadW);
+            y = Math.floor((y - beadYOffsetAt(x)) / beadH);
+            //if click is within the bounds of the design & the beads color !== the current selected color,
+            //set the color of the bead clicked using the current tool
+            const inBounds = x < this.getWidth() && x >= 0 && y < this.getHeight() && y >= 0;
+            if (inBounds && this.design[y][x] !== this.currColor) {
+                console.log(`changing color of bead at ${x}, ${y}`); //DEV
+                tool.useAt({ x, y }, this);
             }
         };
         this.getHeight = () => this.design.length;
@@ -121,6 +117,12 @@ export default class Kandi {
             for (let i = 0; i < this.getHeight(); i++) {
                 this.design[i][0] = lastColumn[i];
             }
+        };
+        this.getBeadAt = (p) => {
+            return this.design[p.y][p.x];
+        };
+        this.setBeadAt = (p, c) => {
+            this.design[p.y][p.x] = c;
         };
         this.startPoint = { x: leftOffset, y: topOffset };
         this.endPoint = {
