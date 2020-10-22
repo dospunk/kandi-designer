@@ -1,5 +1,3 @@
-import Cursor from "./cursor.js";
-
 const leftOffset = 20;
 const topOffset = 20;
 const beadW = 21;
@@ -29,8 +27,7 @@ export default class Kandi {
 										 "#FF7F00",
 										 "#FF0900"],
 		public currColor: number = 1,
-		public outlineColor: string = "#000000",
-		public curs: Cursor = new Cursor()
+		public outlineColor: string = "#000000"
 	){
 		this.startPoint = {x: leftOffset, y: topOffset};
 		this.endPoint = {
@@ -59,20 +56,18 @@ export default class Kandi {
 	/**
 	 * colors the bead underneath the cursor if the left mouse button is pressed
 	 */
-	paint = () => {
-		if(this.curs.down){
-			//convert click coord to array coord
-			let x = this.curs.pos.x-leftOffset;
-			let y = this.curs.pos.y-topOffset;
-			x = Math.floor(x / beadW);
-			y = Math.floor((y - beadYOffsetAt(x)) / beadH);
-			//if click is within the bounds of the design & the beads color !== the current selected color,
-			//set the color of the bead clicked
-			const inBounds = x < this.getWidth() && x >= 0 && y < this.getHeight() && y >= 0;
-			if(inBounds && this.design[y][x] !== this.currColor) {
-				console.log(`changing color of bead at ${x}, ${y}`);//DEV
-				this.design[y][x] = this.currColor;
-			}
+	paint = (pos: point, tool: Tool) => {
+		//convert click coord to array coord
+		let x = pos.x-leftOffset;
+		let y = pos.y-topOffset;
+		x = Math.floor(x / beadW);
+		y = Math.floor((y - beadYOffsetAt(x)) / beadH);
+		//if click is within the bounds of the design & the beads color !== the current selected color,
+		//set the color of the bead clicked using the current tool
+		const inBounds = x < this.getWidth() && x >= 0 && y < this.getHeight() && y >= 0;
+		if(inBounds && this.design[y][x] !== this.currColor) {
+			console.log(`changing color of bead at ${x}, ${y}`);//DEV
+			tool.useAt({x,y}, this);
 		}
 	}
 
@@ -138,5 +133,13 @@ export default class Kandi {
 		for (let i = 0; i < this.getHeight(); i++) {
 			this.design[i][0] = lastColumn[i];
 		}
+	}
+
+	getBeadAt = (p: point): number => {
+		return this.design[p.y][p.x];
+	}
+
+	setBeadAt = (p: point, c: number) => {
+		this.design[p.y][p.x] = c;
 	}
 }

@@ -1,5 +1,12 @@
+@import 'palette.css';
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
 html, body {
 	height: 90%;
+}
+
+body {
+	font-family: 'Roboto Condensed', sans-serif;
 }
 
 #kandi-canvas {
@@ -41,4 +48,46 @@ html, body {
 #color-palette > button {
 	width: 2rem;
 	height: 2rem;
+}
+
+#tools-container > button {
+	width: 2rem;
+	height: 2rem;
+	padding: 0;
+}
+
+#tools-container > button > img {
+	width: auto;
+	height: 100%;
+}
+
+.selected {
+	border: 3px solid blue;
+}
+
+menu {
+	padding-left: 0;
+	list-style-type: none;
+}
+
+#toolbar {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.toolbar-section {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.toolbar-section-heading {
+	display: block;
+	font-size: small;
+	font-weight: lighter;
+	margin-bottom: 2px;
+	text-decoration: underline dashed var(--black) 1px;
+}
+
+#size-section input {
+	width: 72px;
 }
