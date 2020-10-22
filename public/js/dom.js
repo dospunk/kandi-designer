@@ -1,3 +1,4 @@
+import { Pencil, Fill } from './tools.js';
 const getButtonById = (id) => document.getElementById(id);
 const getDivById = (id) => document.getElementById(id);
 export const canvas = document.getElementById("kandi-canvas");
@@ -19,15 +20,17 @@ const addColorBtn = getButtonById("add-to-palette");
 const shiftLeftBtn = getButtonById("shiftLeft");
 const shiftRightBtn = getButtonById("shiftRight");
 const exportBtn = getButtonById("exportDesign");
-export function initListeners(kandi, setKandi) {
+const pencilBtn = getButtonById("pencil-btn");
+const fillBtn = getButtonById("fill-btn");
+export function initListeners(kandi, curs, setTool) {
     //canvas
     canvas.addEventListener('mousemove', evt => {
         const rect = canvas.getBoundingClientRect();
-        kandi.curs.updatePosition({ x: evt.clientX - rect.left, y: evt.clientY - rect.top });
+        curs.updatePosition({ x: evt.clientX - rect.left, y: evt.clientY - rect.top });
     });
-    canvas.addEventListener('mousedown', () => kandi.curs.onDown());
+    canvas.addEventListener('mousedown', () => curs.onDown());
     document.addEventListener('mouseup', () => {
-        kandi.curs.onUp();
+        curs.onUp();
         updateBeadCounts(kandi);
     });
     //increase/decrease size buttons
@@ -62,6 +65,15 @@ export function initListeners(kandi, setKandi) {
         kandi.palette.push("#ffffff");
         palette.appendChild(createPaletteButton(kandi.palette[kandi.palette.length - 1], kandi.palette.length - 1, kandi));
         editPalette.appendChild(createEditPaletteButton(kandi.palette[kandi.palette.length - 1], kandi.palette.length - 1, kandi));
+    };
+    //tool buttons
+    pencilBtn.onclick = () => {
+        setTool(new Pencil());
+        showSelection(pencilBtn);
+    };
+    fillBtn.onclick = () => {
+        setTool(new Fill());
+        showSelection(fillBtn);
     };
     //shift left/right buttons
     shiftLeftBtn.onclick = () => kandi.shiftLeft();
@@ -101,11 +113,22 @@ export function initListeners(kandi, setKandi) {
     xInput.onchange = () => kandi.setWidth(parseInt(xInput.value));
     yInput.onchange = () => kandi.setHeight(parseInt(yInput.value));
 }
+function showSelection(selectedElem) {
+    const parentElem = selectedElem.parentElement;
+    for (const child of parentElem.children) {
+        child.classList.remove("selected");
+    }
+    selectedElem.classList.add("selected");
+}
+function selectColor(k, colorIdx, btn) {
+    k.currColor = colorIdx;
+    showSelection(btn);
+}
 function createPaletteButton(color, idx, kandi) {
     const btn = document.createElement("button");
     btn.style.backgroundColor = color;
     //btn.className = "palette-btn";
-    btn.onclick = () => kandi.currColor = idx;
+    btn.onclick = () => selectColor(kandi, idx, btn);
     return btn;
 }
 function createEditPaletteButton(color, idx, kandi) {
@@ -129,7 +152,11 @@ function clearPalette() {
 export function populatePalette(kandi) {
     for (let i = 0; i < kandi.palette.length; i++) {
         const color = kandi.palette[i];
-        palette.appendChild(createPaletteButton(color, i, kandi));
+        const btn = createPaletteButton(color, i, kandi);
+        if (i === kandi.currColor) {
+            btn.classList.add("selected");
+        }
+        palette.appendChild(btn);
         editPalette.appendChild(createEditPaletteButton(color, i, kandi));
     }
 }

@@ -5,7 +5,7 @@ export default class Cursor {
         this.updatePosition = (pos) => {
             this.pos = pos;
         };
-        this.onDown = () => this.down = true;
-        this.onUp = () => this.down = false;
+        this.onDown = () => { this.down = true; };
+        this.onUp = () => { this.down = false; };
     }
 }
