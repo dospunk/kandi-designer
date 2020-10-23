@@ -1,93 +1,120 @@
-@import 'palette.css';
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
-
-html, body {
-	height: 90%;
-}
-
-body {
-	font-family: 'Roboto Condensed', sans-serif;
-}
-
-#kandi-canvas {
-	border: 1px solid black;
-	/*display: block;
-	margin: auto;*/
-}
-
-#canvas-container {
-	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+/* https://flatuicolors.com/palette/us */
 #edit-color-palette-container {
-	display: none;
+  display: none;
 }
 
-#bead-counts {
-	padding-left: 0;
-	display: inline-block;
+#color-palette {
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
 }
-
-#bead-counts > li{
-	list-style-type: none;
-	display: inline-block;
-	margin-right: 10px;
-}
-
-.bead-count-color-label {
-	display: inline-block;
-	border: 1px solid black;
-	width: 1rem;
-	height: 1rem;
-	margin-right: 5px;
-}
-
 #color-palette > button {
-	width: 2rem;
-	height: 2rem;
+  width: 2rem;
+  height: 2rem;
 }
 
-#tools-container > button {
-	width: 2rem;
-	height: 2rem;
-	padding: 0;
+#edit-color-palette {
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+#edit-color-palette input {
+  width: 2rem;
+  height: 2rem;
 }
 
-#tools-container > button > img {
-	width: auto;
-	height: 100%;
+#tools-container {
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
 }
-
-.selected {
-	border: 3px solid blue;
+#tools-container li {
+  display: inline;
+}
+#tools-container button {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+}
+#tools-container button > img {
+  width: auto;
+  height: 100%;
 }
 
 menu {
-	padding-left: 0;
-	list-style-type: none;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
 }
 
 #toolbar {
-	display: flex;
-	margin-bottom: 10px;
+  display: flex;
+  margin-bottom: 10px;
+  width: 100%;
 }
 
 .toolbar-section {
-	margin-left: 10px;
-	margin-right: 10px;
+  margin-left: 12px;
+  margin-right: 12px;
 }
-
-.toolbar-section-heading {
-	display: block;
-	font-size: small;
-	font-weight: lighter;
-	margin-bottom: 2px;
-	text-decoration: underline dashed var(--black) 1px;
+.toolbar-section > .toolbar-section-heading {
+  display: block;
+  font-size: small;
+  font-weight: lighter;
+  margin-bottom: 2px;
+  text-decoration: underline dashed #2d3436 1px;
 }
 
 #size-section input {
-	width: 72px;
+  width: 72px;
 }
+
+.selected {
+  border: 3px solid #0984e3;
+}
+
+html, body {
+  height: 90%;
+}
+
+body {
+  font-family: "Roboto Condensed", sans-serif;
+}
+
+#kandi-canvas {
+  border: 1px solid #2d3436;
+}
+
+#canvas-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#bead-counts {
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+  display: inline-block;
+}
+#bead-counts > li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.bead-count-color-label {
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+  border: 1px solid #2d3436;
+  margin-right: 5px;
+}
+
+/*# sourceMappingURL=index.css.map */

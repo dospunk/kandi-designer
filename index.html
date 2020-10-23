@@ -28,28 +28,29 @@
 		<div class="toolbar-section">
 			<span class="toolbar-section-heading">Palette</span>
 			<div id="color-palette-container">
-				<div id="color-palette">
-					<!--TODO: change these to ordered lists-->
-				</div>
+				<ol id="color-palette"></ol>
 				<button id="edit-palette">Edit</button>
 			</div>
 			<div id="edit-color-palette-container">
-				<div id="edit-color-palette"></div>
-				<!--TODO: change these to ordered lists-->
+				<ol id="edit-color-palette"></ol>
 				<button id="add-to-palette">+</button>
 				<button id="done-editing">Done</button>
 			</div>
 		</div>
-		<div id="tools-container">
+		<div id="tools-container" class="toolbar-section">
 			<span class="toolbar-section-heading">Tools</span>
-			<div id="tools-container">
-				<button id="pencil-btn" class="selected">
-					<img src="./images/pencil-button.png" alt="Pencil">
-				</button>
-				<button id="fill-btn">
-					<img src="./images/fill-button.png" alt="Fill">
-				</button>
-			</div>
+			<ul id="tools-container">
+				<li>
+					<button id="pencil-btn" class="selected">
+						<img src="./images/pencil-button.png" alt="Pencil">
+					</button>
+				</li>
+				<li>
+					<button id="fill-btn">
+						<img src="./images/fill-button.png" alt="Fill">
+					</button>
+				</li>
+			</ul>
 		</div>
 	</div>
 
