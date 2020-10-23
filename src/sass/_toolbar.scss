@@ -1,0 +1,70 @@
+@use 'base';
+@use 'palette';
+
+#edit-color-palette-container {
+	display: none;
+}
+
+#color-palette {
+	@include base.delist();
+	> button {
+		@include base.square(2rem);
+	}
+}
+
+#edit-color-palette {
+	@include base.delist();
+	input {
+		@include base.square(2rem);
+	}
+}
+
+#tools-container {
+	@include base.delist();
+	li {
+		display: inline;
+	}
+	button {
+		@include base.square(2rem);
+		padding: 0;
+		> img {
+			width: auto;
+			height: 100%;
+		}
+	}
+}
+
+menu {
+	@include base.delist();
+}
+
+#toolbar {
+	display: flex;
+	margin-bottom: 10px;
+	width: 100%;
+}
+
+.toolbar-section {
+	$margin-sides: 12px;
+	margin: {
+		left: $margin-sides;
+		right: $margin-sides;
+	}
+	> .toolbar-section-heading {
+		display: block;
+		font-size: small;
+		font-weight: lighter;
+		margin-bottom: 2px;
+		text-decoration: underline dashed palette.$black 1px;
+	}
+}
+
+#size-section{
+	input {
+		width: 72px;
+	}
+}
+
+.selected {
+	border: 3px solid palette.$blue;
+}

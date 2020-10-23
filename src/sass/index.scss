@@ -1,0 +1,39 @@
+@use 'base';
+@use 'palette';
+@use 'toolbar';
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+html, body {
+	height: 90%;
+}
+
+body {
+	font-family: 'Roboto Condensed', sans-serif;
+}
+
+#kandi-canvas {
+	border: 1px solid palette.$black;
+}
+
+#canvas-container {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#bead-counts {
+	@include base.delist();
+	display: inline-block;
+	> li {
+		display: inline-block;
+		margin-right: 10px;
+	}
+}
+
+.bead-count-color-label {
+	@include base.square(1rem);
+	display: inline-block;
+	border: 1px solid palette.$black;
+	margin-right: 5px;
+}
