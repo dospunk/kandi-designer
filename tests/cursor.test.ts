@@ -1,4 +1,4 @@
-import Cursor from '../ts/cursor';
+import Cursor from '../src/ts/cursor';
 
 test('test update position', () => {
 	const cursor = new Cursor();

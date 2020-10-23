@@ -1,4 +1,4 @@
-import Kandi from '../ts/kandi'
+import Kandi from '../src/ts/kandi'
 
 const canv = document.createElement('canvas');
 canv.width = 900;
