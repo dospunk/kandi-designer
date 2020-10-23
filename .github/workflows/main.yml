@@ -8,8 +8,9 @@ on:
   push:
     branches: master
     paths:
-      - "public/**"
-      - "ts/**"
+      - "public/images"
+      - "public/index.html"
+      - "src/**"
       - "tests/**"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
