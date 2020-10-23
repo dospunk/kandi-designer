@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "A page for making Kandi patterns",
   "scripts": {
-	"test": "jest",
-	"typescript": "tsc",
-	"sass": "sass src/sass:public/css",
-	"build": "run-p typescript sass"
+    "test": "jest",
+    "typescript": "tsc",
+    "sass": "sass src/sass:public/css",
+    "build": "run-p typescript sass"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "@types/jest": "^26.0.14",
     "canvas": "^2.6.1",
     "jest": "^26.5.2",
+    "npm-run-all": "^4.1.5",
     "sass": "^1.27.0",
     "ts-jest": "^26.4.1",
     "typescript": "^4.0.3"
