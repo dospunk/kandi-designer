@@ -31,8 +31,8 @@ jobs:
       - name: npm install
         run: npm install
       
-      - name: compile TypeScript
-        uses: icrawl/action-tsc@v1
+      - name: build
+        run: npm run build
 
       - name: run tests
         run: npm run test
