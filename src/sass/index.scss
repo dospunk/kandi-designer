@@ -37,3 +37,13 @@ body {
 	border: 1px solid palette.$black;
 	margin-right: 5px;
 }
+
+input[type=number].no-spinner::-webkit-inner-spin-button,
+input[type=number].no-spinner::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type=number].no-spinner {
+	-moz-appearance: textfield;
+}
