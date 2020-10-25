@@ -63,8 +63,8 @@ export function initListeners(kandi, curs, setTool) {
     };
     addColorBtn.onclick = () => {
         kandi.palette.push("#ffffff");
-        palette.appendChild(createPaletteButton(kandi.palette[kandi.palette.length - 1], kandi.palette.length - 1, kandi));
-        editPalette.appendChild(createEditPaletteButton(kandi.palette[kandi.palette.length - 1], kandi.palette.length - 1, kandi));
+        palette.appendChild(createPaletteItem(kandi.palette[kandi.palette.length - 1], kandi.palette.length - 1, kandi));
+        editPalette.appendChild(createEditPaletteItem(kandi.palette[kandi.palette.length - 1], kandi.palette.length - 1, kandi));
     };
     //tool buttons
     pencilBtn.onclick = () => {
@@ -113,10 +113,27 @@ export function initListeners(kandi, curs, setTool) {
     xInput.onchange = () => kandi.setWidth(parseInt(xInput.value));
     yInput.onchange = () => kandi.setHeight(parseInt(yInput.value));
 }
+function childrenOfChildren(list) {
+    const out = [];
+    for (const li of list.children) {
+        out.push(li.children);
+    }
+    return out;
+}
 function showSelection(selectedElem) {
-    const parentElem = selectedElem.parentElement;
-    for (const child of parentElem.children) {
-        child.classList.remove("selected");
+    let parentElem = selectedElem.parentElement;
+    //if elements are wrapped in LI's, the work on the first element in each LI
+    if (parentElem.tagName === "LI") {
+        parentElem = parentElem.parentElement;
+        for (const children of childrenOfChildren(parentElem)) {
+            const btn = children[0];
+            btn.classList.remove("selected");
+        }
+    }
+    else {
+        for (const child of parentElem.children) {
+            child.classList.remove("selected");
+        }
     }
     selectedElem.classList.add("selected");
 }
@@ -124,22 +141,27 @@ function selectColor(k, colorIdx, btn) {
     k.currColor = colorIdx;
     showSelection(btn);
 }
-function createPaletteButton(color, idx, kandi) {
+function createPaletteItem(color, idx, kandi) {
     const btn = document.createElement("button");
     btn.style.backgroundColor = color;
     //btn.className = "palette-btn";
     btn.onclick = () => selectColor(kandi, idx, btn);
-    return btn;
+    const li = document.createElement("li");
+    li.appendChild(btn);
+    return li;
 }
-function createEditPaletteButton(color, idx, kandi) {
+function createEditPaletteItem(color, idx, kandi) {
     const input = document.createElement("input");
     input.type = "color";
     input.value = color;
     input.onchange = () => {
-        palette.children[idx].style.backgroundColor = input.value;
+        const paletteBtn = childrenOfChildren(palette)[idx][0];
+        paletteBtn.style.backgroundColor = input.value;
         kandi.palette[idx] = input.value;
     };
-    return input;
+    const li = document.createElement("li");
+    li.appendChild(input);
+    return li;
 }
 function clearChildren(elem) {
     while (elem.lastChild)
@@ -152,12 +174,13 @@ function clearPalette() {
 export function populatePalette(kandi) {
     for (let i = 0; i < kandi.palette.length; i++) {
         const color = kandi.palette[i];
-        const btn = createPaletteButton(color, i, kandi);
+        const li = createPaletteItem(color, i, kandi);
+        const btn = li.firstElementChild;
         if (i === kandi.currColor) {
             btn.classList.add("selected");
         }
-        palette.appendChild(btn);
-        editPalette.appendChild(createEditPaletteButton(color, i, kandi));
+        palette.appendChild(li);
+        editPalette.appendChild(createEditPaletteItem(color, i, kandi));
     }
 }
 export function initDimensionInputs(kandi) {
