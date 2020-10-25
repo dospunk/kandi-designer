@@ -7,15 +7,25 @@
 
 #color-palette {
 	@include base.delist();
-	> button {
+	li{
+		display: inline-block;
+	}
+	button {
 		@include base.square(2rem);
 	}
 }
 
 #edit-color-palette {
 	@include base.delist();
+	li{
+		display: inline-block;
+	}
 	input {
 		@include base.square(2rem);
+		padding: {
+			left: 0;
+			right: 0;
+		}
 	}
 }
 
@@ -61,7 +71,7 @@ menu {
 
 #size-section{
 	input {
-		width: 72px;
+		width: 36px;
 	}
 }
 
