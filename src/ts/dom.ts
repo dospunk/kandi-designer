@@ -32,9 +32,9 @@ const fillBtn = getButtonById("fill-btn");
 
 /**
  * Initializes event listeners for all static elements on the page
- * @param kandi The {@link Kandi} singleton for the page
- * @param curs The {@link Cursor} singleton for the page
- * @param setTool A function to set the {@link Tool} singleton to a new {@link Tool}
+ * @param kandi The main {@link Kandi}
+ * @param curs The main {@link Cursor}
+ * @param setTool A function to set the main {@link Tool} to a new {@link Tool}
  */
 export function initListeners(kandi: Kandi, curs: Cursor, setTool: (newTool: Tool)=>void){
 	//canvas
@@ -182,7 +182,7 @@ function showSelection(selectedElem: HTMLElement){
 
 /**
  * Sets `k`'s current color to `colorIdx` and shows that `btn` has been selected
- * @param k the {@link Kandi} singleton
+ * @param k the {@link Kandi} to set the current color in
  * @param colorIdx the index of the selected color
  * @param btn the pressed <button>
  */
@@ -194,7 +194,7 @@ function selectColor(k: Kandi, colorIdx: number, btn: HTMLButtonElement) {
 /**
  * @param color the color for the <button>
  * @param idx the index of the color in `kandi.palette`
- * @param kandi the {@link Kanid} singleton
+ * @param kandi the {@link Kanid} whose palette is being built
  * @return An <li> containing a color palette <button>
  */
 function createPaletteItem(color: string, idx: number, kandi: Kandi): HTMLLIElement {
@@ -210,7 +210,7 @@ function createPaletteItem(color: string, idx: number, kandi: Kandi): HTMLLIElem
 /**
  * @param color the color for the <input>
  * @param idx the index of the color in `kandi.palette`
- * @param kandi the {@link Kanid} singleton
+ * @param kandi the {@link Kanid} whose palette is being built
  * @return An <li> containing a color <input> for editing the color palette
  */
 function createEditPaletteItem(color: string, idx: number, kandi: Kandi): HTMLLIElement{
@@ -245,7 +245,7 @@ function clearPalette(){
 
 /**
  * Populates the color palette and edit palette based on `kandi.palette`
- * @param kandi the {@link Kandi} singleton
+ * @param kandi the main {@link Kandi}
  */
 export function populatePalette(kandi: Kandi){
 	for (let i = 0; i < kandi.palette.length; i++) {
@@ -262,7 +262,7 @@ export function populatePalette(kandi: Kandi){
 
 /**
  * sets the values of the dimension <input>s to the width and height of `kandi`
- * @param kandi the {@link Kandi} singleton
+ * @param kandi the main {@link Kandi}
  */
 export function initDimensionInputs(kandi: Kandi){
 	xInput.value = kandi.getWidth().toString();
@@ -271,7 +271,7 @@ export function initDimensionInputs(kandi: Kandi){
 
 /**
  * Updates the bead counts
- * @param kandi the {@link Kandi} singleton
+ * @param kandi the main {@link Kandi}
  */
 export function updateBeadCounts(kandi: Kandi){
 	clearChildren(beadCountsList);

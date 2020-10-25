@@ -64,7 +64,7 @@ export default class Kandi {
 	/**
 	 * Applies `tool.useAt` if the color at `pos` is not the same as `this.currColor`
 	 * @param pos the point on the canvas clicked
-	 * @param tool The {@link Tool} singleton
+	 * @param tool The main {@link Tool} 
 	 */
 	paint = (pos: point, tool: Tool) => {
 		//convert click coord to array coord
