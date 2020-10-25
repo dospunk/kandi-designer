@@ -10,7 +10,10 @@
   margin-bottom: 0;
   list-style-type: none;
 }
-#color-palette > button {
+#color-palette li {
+  display: inline-block;
+}
+#color-palette button {
   width: 2rem;
   height: 2rem;
 }
@@ -21,9 +24,14 @@
   margin-bottom: 0;
   list-style-type: none;
 }
+#edit-color-palette li {
+  display: inline-block;
+}
 #edit-color-palette input {
   width: 2rem;
   height: 2rem;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 #tools-container {
@@ -71,7 +79,7 @@ menu {
 }
 
 #size-section input {
-  width: 72px;
+  width: 36px;
 }
 
 .selected {
@@ -115,6 +123,16 @@ body {
   display: inline-block;
   border: 1px solid #2d3436;
   margin-right: 5px;
+}
+
+input[type=number].no-spinner::-webkit-inner-spin-button,
+input[type=number].no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number].no-spinner {
+  -moz-appearance: textfield;
 }
 
 /*# sourceMappingURL=index.css.map */

@@ -22,6 +22,12 @@ const shiftRightBtn = getButtonById("shiftRight");
 const exportBtn = getButtonById("exportDesign");
 const pencilBtn = getButtonById("pencil-btn");
 const fillBtn = getButtonById("fill-btn");
+/**
+ * Initializes event listeners for all static elements on the page
+ * @param kandi The {@link Kandi} singleton for the page
+ * @param curs The {@link Cursor} singleton for the page
+ * @param setTool A function to set the {@link Tool} singleton to a new {@link Tool}
+ */
 export function initListeners(kandi, curs, setTool) {
     //canvas
     canvas.addEventListener('mousemove', evt => {
@@ -63,8 +69,8 @@ export function initListeners(kandi, curs, setTool) {
     };
     addColorBtn.onclick = () => {
         kandi.palette.push("#ffffff");
-        palette.appendChild(createPaletteButton(kandi.palette[kandi.palette.length - 1], kandi.palette.length - 1, kandi));
-        editPalette.appendChild(createEditPaletteButton(kandi.palette[kandi.palette.length - 1], kandi.palette.length - 1, kandi));
+        palette.appendChild(createPaletteItem(kandi.palette[kandi.palette.length - 1], kandi.palette.length - 1, kandi));
+        editPalette.appendChild(createEditPaletteItem(kandi.palette[kandi.palette.length - 1], kandi.palette.length - 1, kandi));
     };
     //tool buttons
     pencilBtn.onclick = () => {
@@ -113,51 +119,115 @@ export function initListeners(kandi, curs, setTool) {
     xInput.onchange = () => kandi.setWidth(parseInt(xInput.value));
     yInput.onchange = () => kandi.setHeight(parseInt(yInput.value));
 }
+/**
+ * @param list The element to get children from
+ * @returns A list of HTMLCollections containing the children of `list`'s children
+ */
+function childrenOfChildren(list) {
+    const out = [];
+    for (const li of list.children) {
+        out.push(li.children);
+    }
+    return out;
+}
+/**
+ * Applies the "selected" class to `selectedElem` and removes the "selected" class
+ * from any other elements in `selectedElem`'s parent. If `selectedElem`'s parent
+ * is an <li>, the function will effectively ignore the <li>s and work instead on
+ * the parent element of the <li> and the firt child of each <li> in the parent.
+ *
+ * @param selectedElem The element to be selected
+ */
 function showSelection(selectedElem) {
-    const parentElem = selectedElem.parentElement;
-    for (const child of parentElem.children) {
-        child.classList.remove("selected");
+    let parentElem = selectedElem.parentElement;
+    //if elements are wrapped in LI's, the work on the first element in each LI
+    if (parentElem.tagName === "LI") {
+        parentElem = parentElem.parentElement;
+        for (const children of childrenOfChildren(parentElem)) {
+            const btn = children[0];
+            btn.classList.remove("selected");
+        }
+    }
+    else {
+        for (const child of parentElem.children) {
+            child.classList.remove("selected");
+        }
     }
     selectedElem.classList.add("selected");
 }
+/**
+ * Sets `k`'s current color to `colorIdx` and shows that `btn` has been selected
+ * @param k the {@link Kandi} singleton
+ * @param colorIdx the index of the selected color
+ * @param btn the pressed <button>
+ */
 function selectColor(k, colorIdx, btn) {
     k.currColor = colorIdx;
     showSelection(btn);
 }
-function createPaletteButton(color, idx, kandi) {
+/**
+ * @param color the color for the <button>
+ * @param idx the index of the color in `kandi.palette`
+ * @param kandi the {@link Kanid} singleton
+ * @return An <li> containing a color palette <button>
+ */
+function createPaletteItem(color, idx, kandi) {
     const btn = document.createElement("button");
     btn.style.backgroundColor = color;
     //btn.className = "palette-btn";
     btn.onclick = () => selectColor(kandi, idx, btn);
-    return btn;
+    const li = document.createElement("li");
+    li.appendChild(btn);
+    return li;
 }
-function createEditPaletteButton(color, idx, kandi) {
+/**
+ * @param color the color for the <input>
+ * @param idx the index of the color in `kandi.palette`
+ * @param kandi the {@link Kanid} singleton
+ * @return An <li> containing a color <input> for editing the color palette
+ */
+function createEditPaletteItem(color, idx, kandi) {
     const input = document.createElement("input");
     input.type = "color";
     input.value = color;
     input.onchange = () => {
-        palette.children[idx].style.backgroundColor = input.value;
+        const paletteBtn = childrenOfChildren(palette)[idx][0];
+        paletteBtn.style.backgroundColor = input.value;
         kandi.palette[idx] = input.value;
     };
-    return input;
+    const li = document.createElement("li");
+    li.appendChild(input);
+    return li;
 }
+/**
+ * Clears all children of `elem`
+ * @param elem The element to be cleared
+ */
 function clearChildren(elem) {
     while (elem.lastChild)
         elem.removeChild(elem.lastChild);
 }
+/**
+ * Clears the the color palette and edit palette
+ */
 function clearPalette() {
     clearChildren(palette);
     clearChildren(editPalette);
 }
+/**
+ * Populates the color palette and edit palette based on `kandi.palette`
+ * @param kandi the {@link Kandi} singleton
+ */
 export function populatePalette(kandi) {
     for (let i = 0; i < kandi.palette.length; i++) {
         const color = kandi.palette[i];
-        const btn = createPaletteButton(color, i, kandi);
+        const li = createPaletteItem(color, i, kandi);
+        const btn = li.firstElementChild;
         if (i === kandi.currColor) {
             btn.classList.add("selected");
         }
-        palette.appendChild(btn);
-        editPalette.appendChild(createEditPaletteButton(color, i, kandi));
+        palette.appendChild(li);
+        editPalette.appendChild(createEditPaletteItem(color, i, kandi));
     }
 }
 export function initDimensionInputs(kandi) {
