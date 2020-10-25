@@ -260,11 +260,19 @@ export function populatePalette(kandi: Kandi){
 	}
 }
 
+/**
+ * sets the values of the dimension <input>s to the width and height of `kandi`
+ * @param kandi the {@link Kandi} singleton
+ */
 export function initDimensionInputs(kandi: Kandi){
 	xInput.value = kandi.getWidth().toString();
 	yInput.value = kandi.getHeight().toString();
 }
 
+/**
+ * Updates the bead counts
+ * @param kandi the {@link Kandi} singleton
+ */
 export function updateBeadCounts(kandi: Kandi){
 	clearChildren(beadCountsList);
 	const amounts: {[color: number]: number} = {};
