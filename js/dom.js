@@ -230,10 +230,18 @@ export function populatePalette(kandi) {
         editPalette.appendChild(createEditPaletteItem(color, i, kandi));
     }
 }
+/**
+ * sets the values of the dimension <input>s to the width and height of `kandi`
+ * @param kandi the {@link Kandi} singleton
+ */
 export function initDimensionInputs(kandi) {
     xInput.value = kandi.getWidth().toString();
     yInput.value = kandi.getHeight().toString();
 }
+/**
+ * Updates the bead counts
+ * @param kandi the {@link Kandi} singleton
+ */
 export function updateBeadCounts(kandi) {
     clearChildren(beadCountsList);
     const amounts = {};

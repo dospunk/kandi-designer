@@ -28,6 +28,9 @@ export default class Kandi {
         this.palette = palette;
         this.currColor = currColor;
         this.outlineColor = outlineColor;
+        /**
+         * Draws the Kandi on the canvas
+         */
         this.draw = () => {
             this.ctx.clearRect(0, 0, this.canvWidth, this.canvHeight);
             //draw beads
@@ -45,7 +48,9 @@ export default class Kandi {
             }
         };
         /**
-         * colors the bead underneath the cursor if the left mouse button is pressed
+         * Applies `tool.useAt` if the color at `pos` is not the same as `this.currColor`
+         * @param pos the point on the canvas clicked
+         * @param tool The {@link Tool} singleton
          */
         this.paint = (pos, tool) => {
             //convert click coord to array coord
@@ -61,8 +66,19 @@ export default class Kandi {
                 tool.useAt({ x, y }, this);
             }
         };
+        /**
+         * @return The height of the design
+         */
         this.getHeight = () => this.design.length;
+        /**
+         * @return The width of the design
+         */
         this.getWidth = () => this.design[0].length;
+        /**
+         * Sets the design's height to `newH`. This method is destructive if `newH`
+         * is less than the current height
+         * @param newH The new height of the design
+         */
         this.setHeight = (newH) => {
             if (newH < 1)
                 return;
@@ -77,6 +93,11 @@ export default class Kandi {
                 }
             }
         };
+        /**
+         * Sets the design's width to `newW`. This method is destructive if `newW`
+         * is less than the current width
+         * @param newW The new width of the design
+         */
         this.setWidth = (newW) => {
             if (newW < 1)
                 return;
@@ -97,9 +118,15 @@ export default class Kandi {
                 }
             }
         };
+        /**
+         * @returns `true` if the design only contains the first color in the palette
+         */
         this.isEmpty = () => {
             return this.design.every(row => row.every(bead => bead === 0));
         };
+        /**
+         * Shifts the design left by one column
+         */
         this.shiftLeft = () => {
             const firstColumn = this.design.map(row => row[0]);
             for (let i = 0; i < this.getHeight(); i++) {
@@ -111,6 +138,9 @@ export default class Kandi {
                 this.design[i][this.getWidth() - 1] = firstColumn[i];
             }
         };
+        /**
+         * Shifts the design right by one column
+         */
         this.shiftRight = () => {
             const lastColumn = this.design.map(row => row[this.getWidth() - 1]);
             for (let i = 0; i < this.getHeight(); i++) {
@@ -123,9 +153,18 @@ export default class Kandi {
                 this.design[i][0] = lastColumn[i];
             }
         };
+        /**
+         * @param p The location of the desired bead in the design
+         * @returns The index of the bead's color in `this.palette`
+         */
         this.getBeadAt = (p) => {
             return this.design[p.y][p.x];
         };
+        /**
+         * Sets the color of a bead
+         * @param p the location in the design of the bead to be set
+         * @param c The index of the bead's new color in `this.palette`
+         */
         this.setBeadAt = (p, c) => {
             this.design[p.y][p.x] = c;
         };
