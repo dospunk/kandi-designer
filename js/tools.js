@@ -3,7 +3,7 @@ export class Pencil {
         /**
          * Colors a single bead
          * @param pos The position of the bead to color
-         * @param k The {@link Kandi} singleton
+         * @param k The {@link Kandi} to edit
          */
         this.useAt = (pos, k) => {
             k.setBeadAt(pos, k.currColor);
@@ -15,7 +15,7 @@ export class Fill {
         /**
          * Colors all beads touching the bead at `pos` that are the same color as that bead
          * @param pos The position of the first bead to color
-         * @param k the {@link Kandi} singleton
+         * @param k the {@link Kandi} to edit
          */
         this.useAt = (pos, k) => {
             this.helper(pos, k, k.getBeadAt(pos));
@@ -24,7 +24,7 @@ export class Fill {
         /**
          * Helper function for {@link Fill.useAt}
          * @param pos The position of the current bead to color and whose neighbors should be checked
-         * @param k The {@link Kandi} singleton
+         * @param k The {@link Kandi} to edit
          * @param initColor The color of teh first bead selected
          */
         this.helper = (pos, k, initColor) => {
